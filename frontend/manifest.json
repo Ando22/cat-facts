@@ -1,0 +1,10 @@
+{
+    "version": "1.0.0",
+    "manifest_version": 3,
+    "name": "Cat Facts",
+    "description": "This extension will show you a random cat fact every time you click on the extension icon.",
+    "action": {
+        "default_popup": "js/index.html",
+        "default_title": "Cat Facts"
+    }
+}

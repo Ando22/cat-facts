@@ -1,41 +1,32 @@
 package database
 
 import (
-	"context"
+	"database/sql"
 	"log"
-	"time"
 
-	"user-message/backend/config"
-
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/Ando22/user-message/backend/config"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/jinzhu/gorm"
 )
 
-var (
-	db *mongo.Database
-)
+var dbHandler *sql.DB
 
-// InitDatabase initializes the MongoDB database connection
-func InitDatabase() {
-	client, err := mongo.NewClient(options.Client().ApplyURI(config.DatabaseURL))
+// InitDatabase initializes the SQL database connection
+func InitDatabase() error {
+	connStr := config.DatabaseUsername + ":" + config.DatabasePassword + "@tcp(" + config.DatabaseHost + ":" + config.DatabasePort + ")/" + config.DatabaseName + "?parseTime=true"
+
+	db, err := gorm.Open("mysql", connStr)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	err = client.Connect(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	db = client.Database(config.DatabaseName)
+	dbHandler = db.DB()
 
 	log.Println("Connected to database")
+	return nil
 }
 
-// GetDB returns the MongoDB database instance
-func GetDB() *mongo.Database {
-	return db
+// GetDB returns the SQL database instance
+func GetDB() *sql.DB {
+	return dbHandler
 }

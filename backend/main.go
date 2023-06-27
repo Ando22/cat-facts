@@ -4,13 +4,21 @@ import (
 	"log"
 	"net/http"
 
-	"user-message/backend/api/routes"
+	"github.com/Ando22/user-message/backend/api/routes"
+	"github.com/Ando22/user-message/backend/database"
 
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
 
 func main() {
+	log.Println("Initialising db")
+	// database.InitDatabase()
+	err := database.InitDatabase()
+	if err != nil {
+		panic(err.Error())
+	}
+
 	router := mux.NewRouter()
 
 	routes.RegisterAPIRoutes(router)
