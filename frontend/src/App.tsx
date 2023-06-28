@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Fact, getStoreData, addData, Stores, initDB } from './lib/db';
 
+import 'tailwindcss/tailwind.css';
+
+
 const App = () => {
   const [messages, setMessages] = useState<Fact[]>([]);
 
@@ -19,7 +22,6 @@ const App = () => {
         'http://localhost:8000/api/facts'
       );
       const data = await response.json();
-      console.log("data", data)
       const facts = data.map((fact: Fact) => ({
         id: fact.id,
         fact: fact.fact,
@@ -53,19 +55,22 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>Notifications</h1>
-      {messages.map((message: Fact) => (
-        <div key={message.id} className="notification">
-          <p>{message.fact}</p>
-        </div>
-      ))}
+    <div className="flex flex-col justify-center items-center py-8 px-4 gap-4">
+      <h1 className="text-2xl font-semibold text-center">Cat Facts Library</h1>
+
+      <div className="flex flex-col gap-2">
+        {messages.map((message: Fact) => (
+          <div key={message.id} className="rounded-lg shadow-md p-4 border border-gray-200">
+            <p>{message.fact}</p>
+          </div>
+        ))}
+      </div>
 
       <button onClick={
         () => fetchFromCloudDatabase()
       }
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >Get New Message</button>
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
+      >Get New Cat Fact</button>
     </div>
   );
 };

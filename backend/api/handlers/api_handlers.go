@@ -34,7 +34,7 @@ func GetFacts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fact, err := tx.QueryContext(ctx, "SELECT * FROM facts ORDER BY id DESC")
+	fact, err := tx.QueryContext(ctx, "SELECT * FROM facts ORDER BY id ASC")
 	if err != nil {
 		utils.RespondWithError(w, http.StatusInternalServerError, "Failed to fetch facts c")
 		tx.Rollback()
